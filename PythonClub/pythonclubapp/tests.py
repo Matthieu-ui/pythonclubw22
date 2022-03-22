@@ -18,6 +18,15 @@ class MeetingTest(TestCase):
     def test_table(self):
         self.assertEqual(str(Meeting._meta.db_table),'meeting')
 
+#error: MeetMinute has no meetingId
+# class MeetMinuteTest(TestCase):
+#     def setUp(self):
+#         meeting=Meeting(meetingTitle='meetingTest', meetingDate='10/25/2022',meetingTime='12:00', meetingLocation='virtual')
+
+#     def testString(self):
+#         type=MeetMinute(minuteText='TestingMeetMinute')
+#         self.assertEqual(str(type), type.minuteText)
+
 class ResourceTest(TestCase):
    def test_string(self):
        res=Resource(resourceName="library")
@@ -65,7 +74,10 @@ class New_Meeting_Authenticaiton_Test(TestCase):
             meetingTitle = 'test title',
             meetingDate = '2022-3-10',
             meetingTime = '13:00:00',
-            meetingLocation = 'test office',
+            meetingLocation = 'test library',
             meetingAgenda = 'testing'
         )
 
+    def test_redirect_if_not_logged_in(self):
+        response=self.client.get(reverse('newmeeting'))
+        self.assertRedirects(response,'/accounts/login/?next=/pythonclubapp/newmeeting/')
